@@ -1,8 +1,9 @@
 import './CSS/App.css';
+import Header from './Header.js';
 
 function App(){
   return(
-    <h2>Hello world</h2>
+    <Header />
   );
 }
 

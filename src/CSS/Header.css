@@ -1,0 +1,39 @@
+#header_container{
+    height: 7.5vh;
+    width: 100vw;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    background-color: hsl(186, 11%, 34%);
+}
+
+.header_button_container{
+    height: 100%;
+    width: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#lock_btn, #add_new_btn, #profile_btn, #edit_btn{
+    height: 80%;
+    width: 100%;
+    border-radius: 10px;
+    border-width: 1px;
+}
+
+.header_search_bar_container{
+    height: 80%;
+    width: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+#header_search_bar{
+    height: 100%;
+    width: 100%;
+    border-radius: 10px;
+    border-width: 1px;
+}
