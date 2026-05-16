@@ -3,12 +3,11 @@ import React from 'react';
 import StoryCircle from './StoryCircle.jsx';
 import './StoryBar.css';
 
-function StoryBar({ categoryKey, title, stories, isEditMode, onSelectStory, onDeleteList, onMoveListUp, onMoveListDown }) {
-
+// Changed props to accept specific functions for up/down/delete
+function StoryBar({ listId, title, stories, isEditMode, onSelectStory, onDeleteList, onMoveListUp, onMoveListDown, isFirst, isLast }) {
     const handleDeleteClick = () => {
-    // Native browser confirmation dialogue
     if (window.confirm(`Are you sure you want to completely delete the "${title}" list and all its memories?`)) {
-        onDeleteList(categoryKey);
+        onDeleteList();
     }
     };
 
@@ -17,13 +16,13 @@ function StoryBar({ categoryKey, title, stories, isEditMode, onSelectStory, onDe
         <div className="story-bar-header">
         <h3 className="category-title">{title}</h3>
         
-        {/* Render Edit Controls ONLY when isEditMode is true */}
         {isEditMode && (
             <div className="list-edit-controls">
-            <button className="icon-btn-small" onClick={() => onMoveListUp(categoryKey)} title="Move List Up">
+            {/* Disabled states added if it's the very top or very bottom list */}
+            <button className="icon-btn-small" onClick={onMoveListUp} disabled={isFirst} title="Move List Up">
                 <i className="fa-solid fa-chevron-up"></i>
             </button>
-            <button className="icon-btn-small" onClick={() => onMoveListDown(categoryKey)} title="Move List Down">
+            <button className="icon-btn-small" onClick={onMoveListDown} disabled={isLast} title="Move List Down">
                 <i className="fa-solid fa-chevron-down"></i>
             </button>
             <button className="icon-btn-small delete-btn" onClick={handleDeleteClick} title="Delete Entire List">
@@ -44,7 +43,7 @@ function StoryBar({ categoryKey, title, stories, isEditMode, onSelectStory, onDe
             <StoryCircle 
                 key={story.id} 
                 story={story} 
-                onClick={() => onSelectStory(story, categoryKey)} 
+                onClick={() => onSelectStory(story, listId)} 
             />
             ))}
         </div>

@@ -4,76 +4,77 @@ import './CSS/App.css';
 import Header from './Header.jsx';
 import StoryBar from './components/StoryBar/StoryBar.jsx';
 import StoryEditModal from './components/StoryEditor/StoryEditModal.jsx';
-import { demoCategories } from './data/demoStories.js';
+import { demoCategoriesArray } from './data/demoStories.js';
 
 function App() {
-  // Global State Configuration
-  const [categories, setCategories] = useState(demoCategories);
+  const [categories, setCategories] = useState(demoCategoriesArray);
   const [isEditMode, setIsEditMode] = useState(false);
-  
-  // Viewing/Editing States
-  const [activeStoryViewer, setActiveStoryViewer] = useState(null); // For fullscreen viewing later
-  const [editingStoryContext, setEditingStoryContext] = useState(null); // { story, categoryKey }
+  const [activeStoryViewer, setActiveStoryViewer] = useState(null);
+  const [editingStoryContext, setEditingStoryContext] = useState(null); // { story, listId }
 
-  // Check if everything is empty
-  const totalStoriesCount = Object.values(categories).reduce((acc, curr) => acc + curr.length, 0);
+  // Calculates total across all arrays to check if entire app is empty
+  const totalStoriesCount = categories.reduce((acc, curr) => acc + curr.stories.length, 0);
 
-  // --- INTERACTION ROUTER ---
-  const handleStorySelect = (story, categoryKey) => {
+  const handleStorySelect = (story, listId) => {
     if (isEditMode) {
-      // If editing, open the vertical edit modal
-      setEditingStoryContext({ story, categoryKey });
+      setEditingStoryContext({ story, listId });
     } else {
-      // If not editing, open the fullscreen viewer (Stage 3 roadmap)
       setActiveStoryViewer(story);
       console.log("Viewing story:", story.title);
     }
   };
 
-  // --- LIST LEVEL CRUD OPERATIONS ---
-  const handleDeleteList = (categoryKey) => {
+  // --- LIST LEVEL CRUD (Fixed) ---
+  const handleDeleteList = (listIdToRemove) => {
+    // This literally removes the object from the array, unmounting the UI row completely
+    setCategories(prev => prev.filter(cat => cat.listId !== listIdToRemove));
+  };
+
+  const handleMoveListUp = (index) => {
+    if (index === 0) return;
     setCategories(prev => {
-      const newCats = { ...prev };
-      newCats[categoryKey] = []; // Empties the array entirely
-      return newCats;
+      const arrCopy = [...prev];
+      // Classic JS Array element swap
+      [arrCopy[index - 1], arrCopy[index]] = [arrCopy[index], arrCopy[index - 1]];
+      return arrCopy;
     });
   };
 
-  const handleMoveListUp = (categoryKey) => {
-    // Reordering object keys in JS is tricky, usually requires array restructuring.
-    // For now, we will log it. To implement fully, we'd need to convert 'categories' 
-    // from an Object of Arrays into an Array of Objects. 
-    console.log(`Move ${categoryKey} up logic triggered. Note: requires data structure refactor to an Array.`);
-    alert("List reordering requires changing `demoCategories` to an Array structure. Let's do that next!");
+  const handleMoveListDown = (index) => {
+    if (index === categories.length - 1) return;
+    setCategories(prev => {
+      const arrCopy = [...prev];
+      // Classic JS Array element swap
+      [arrCopy[index + 1], arrCopy[index]] = [arrCopy[index], arrCopy[index + 1]];
+      return arrCopy;
+    });
   };
 
-  const handleMoveListDown = (categoryKey) => {
-    console.log(`Move ${categoryKey} down logic triggered.`);
-  };
-
-  // --- STORY LEVEL CRUD OPERATIONS ---
-  const handleUpdateStory = (categoryKey, updatedStory) => {
-    setCategories(prev => ({
-      ...prev,
-      [categoryKey]: prev[categoryKey].map(s => s.id === updatedStory.id ? updatedStory : s)
+  // --- STORY LEVEL CRUD (Refactored for Array) ---
+  const handleUpdateStory = (listId, updatedStory) => {
+    setCategories(prev => prev.map(cat => {
+      if (cat.listId === listId) {
+        return {
+          ...cat, 
+          stories: cat.stories.map(s => s.id === updatedStory.id ? updatedStory : s)
+        };
+      }
+      return cat;
     }));
-    // Keep modal state in sync
-    setEditingStoryContext({ story: updatedStory, categoryKey });
+    setEditingStoryContext({ story: updatedStory, listId });
   };
 
-  const handleDeleteStory = (categoryKey, storyId) => {
-    setCategories(prev => ({
-      ...prev,
-      [categoryKey]: prev[categoryKey].filter(s => s.id !== storyId)
+  const handleDeleteStory = (listId, storyId) => {
+    setCategories(prev => prev.map(cat => {
+      if (cat.listId === listId) {
+        return {
+          ...cat,
+          stories: cat.stories.filter(s => s.id !== storyId)
+        };
+      }
+      return cat;
     }));
   };
-
-  // Map configuration for dynamic rendering
-  const listConfigs = [
-    { key: 'favorites', title: '⭐️ Favorites' },
-    { key: 'people', title: '👥 Close Friends' },
-    { key: 'trips', title: '✈️ Wanderlust Trips' }
-  ];
 
   return (
     <div className="App">
@@ -83,35 +84,43 @@ function App() {
       />
 
       <main className="main-content-canvas">
-        {totalStoriesCount === 0 ? (
+        {categories.length === 0 ? (
           <div className="global-empty-state-container">
-             {/* ... empty state UI from earlier ... */}
-             <h2>Your Memory Board is Empty</h2>
+            <div className="empty-state-card">
+              <i className="fa-solid fa-photo-film global-empty-icon"></i>
+              <h2>No Lists Remaining</h2>
+              <p>You have deleted all your memory collections.</p>
+              <button className="primary-action-btn">
+                <i className="fa-solid fa-plus"></i> Create New List
+              </button>
+            </div>
           </div>
         ) : (
           <div className="dashboard-stories-feed">
-            {listConfigs.map(config => (
+            {/* We map directly over state now, no hardcoded configurations! */}
+            {categories.map((category, index) => (
               <StoryBar 
-                key={config.key}
-                categoryKey={config.key}
-                title={config.title} 
-                stories={categories[config.key]} 
+                key={category.listId}
+                listId={category.listId}
+                title={category.title} 
+                stories={category.stories} 
                 isEditMode={isEditMode}
+                isFirst={index === 0}
+                isLast={index === categories.length - 1}
                 onSelectStory={handleStorySelect}
-                onDeleteList={handleDeleteList}
-                onMoveListUp={handleMoveListUp}
-                onMoveListDown={handleMoveListDown}
+                onDeleteList={() => handleDeleteList(category.listId)}
+                onMoveListUp={() => handleMoveListUp(index)}
+                onMoveListDown={() => handleMoveListDown(index)}
               />
             ))}
           </div>
         )}
       </main>
 
-      {/* Render the Vertical Edit Modal if active */}
       {editingStoryContext && (
         <StoryEditModal 
           story={editingStoryContext.story}
-          categoryKey={editingStoryContext.categoryKey}
+          categoryKey={editingStoryContext.listId}
           onClose={() => setEditingStoryContext(null)}
           onUpdateStory={handleUpdateStory}
           onDeleteStory={handleDeleteStory}
