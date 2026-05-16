@@ -168,3 +168,47 @@
   color: #ff416c;
   border-color: #ff416c;
 }
+
+/* --- Editable Title Input --- */
+.category-title-input {
+  background: var(--bg-hover);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  outline: none;
+  width: 50%;
+  max-width: 300px;
+  transition: all 0.2s ease;
+}
+
+.category-title-input:focus {
+  border-color: var(--accent-blue);
+  background: var(--bg-app);
+  box-shadow: 0 0 0 2px rgba(58, 151, 249, 0.2);
+}
+
+/* --- Story Circle Editable Title --- */
+.story-title-input {
+  margin-top: 6px;
+  font-size: 11px;
+  color: var(--text-primary);
+  text-align: center;
+  width: 72px; /* Matches the width of the circle */
+  background: var(--bg-hover);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  padding: 3px;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.story-title-input:focus {
+  border-color: var(--accent-blue);
+  background: var(--bg-app);
+  box-shadow: 0 0 0 1px rgba(58, 151, 249, 0.3);
+}

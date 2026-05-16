@@ -1,10 +1,11 @@
 // src/components/StoryBar/StoryBar.jsx
+
 import React from 'react';
 import StoryCircle from './StoryCircle.jsx';
 import './StoryBar.css';
 
-// Changed props to accept specific functions for up/down/delete
-function StoryBar({ listId, title, stories, isEditMode, onSelectStory, onDeleteList, onMoveListUp, onMoveListDown, isFirst, isLast }) {
+// Add onUpdateTitle to the props list
+function StoryBar({ listId, title, stories, isEditMode, onSelectStory, onDeleteList, onMoveListUp, onMoveListDown, isFirst, isLast, onUpdateTitle, onUpdateStoryTitle }) {
     const handleDeleteClick = () => {
     if (window.confirm(`Are you sure you want to completely delete the "${title}" list and all its memories?`)) {
         onDeleteList();
@@ -14,11 +15,22 @@ function StoryBar({ listId, title, stories, isEditMode, onSelectStory, onDeleteL
     return (
     <section className="story-bar-section">
         <div className="story-bar-header">
-        <h3 className="category-title">{title}</h3>
+        
+        {/* CONDITIONAL TITLE RENDERING */}
+        {isEditMode ? (
+            <input 
+            type="text"
+            className="category-title-input"
+            value={title}
+            onChange={(e) => onUpdateTitle(e.target.value)}
+            placeholder="Enter list name..."
+            />
+        ) : (
+            <h3 className="category-title">{title}</h3>
+        )}
         
         {isEditMode && (
             <div className="list-edit-controls">
-            {/* Disabled states added if it's the very top or very bottom list */}
             <button className="icon-btn-small" onClick={onMoveListUp} disabled={isFirst} title="Move List Up">
                 <i className="fa-solid fa-chevron-up"></i>
             </button>
@@ -43,13 +55,15 @@ function StoryBar({ listId, title, stories, isEditMode, onSelectStory, onDeleteL
             <StoryCircle 
                 key={story.id} 
                 story={story} 
-                onClick={() => onSelectStory(story, listId)} 
+                onClick={() => onSelectStory(story, listId)}
+                isEditMode={isEditMode}
+                onUpdateTitle={(newTitle) => onUpdateStoryTitle(story.id, newTitle)}
             />
             ))}
         </div>
         )}
     </section>
     );
-}
+    }
 
 export default StoryBar;

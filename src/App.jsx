@@ -30,6 +30,12 @@ function App() {
     setCategories(prev => prev.filter(cat => cat.listId !== listIdToRemove));
   };
 
+  const handleUpdateListTitle = (listId, newTitle) => {
+    setCategories(prev => prev.map(cat => 
+      cat.listId === listId ? { ...cat, title: newTitle } : cat
+    ));
+  };
+
   const handleMoveListUp = (index) => {
     if (index === 0) return;
     setCategories(prev => {
@@ -76,6 +82,20 @@ function App() {
     }));
   };
 
+  const handleUpdateStoryTitle = (listId, storyId, newTitle) => {
+    setCategories(prev => prev.map(cat => {
+      if (cat.listId === listId) {
+        return {
+          ...cat,
+          stories: cat.stories.map(s => 
+            s.id === storyId ? { ...s, title: newTitle } : s
+          )
+        };
+      }
+      return cat;
+    }));
+  };
+
   return (
     <div className="App">
       <Header 
@@ -111,6 +131,8 @@ function App() {
                 onDeleteList={() => handleDeleteList(category.listId)}
                 onMoveListUp={() => handleMoveListUp(index)}
                 onMoveListDown={() => handleMoveListDown(index)}
+                onUpdateTitle={(newTitle) => handleUpdateListTitle(category.listId, newTitle)}
+                onUpdateStoryTitle={(storyId, newTitle) => handleUpdateStoryTitle(category.listId, storyId, newTitle)}
               />
             ))}
           </div>
