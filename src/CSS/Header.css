@@ -1,61 +1,68 @@
-#header_container{
-    height:7.5vh;
-    width:100vw;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    gap:10px;
-    background-color:hsl(186,11%,34%);
+/* src/CSS/Header.css */
+#header_container {
+    height: 7.5vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    background-color: var(--bg-elevated); 
+    border-bottom: 1px solid var(--border-color); /* subtle separation */
 }
 
-.header_button_container{
-    height:100%;
-    width:70px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
+.header_button_container {
+    height: 100%;
+    width: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.icon_btn{
-    height:80%;
-    width:80%;
-    border-radius:10px;
-    border:1px solid #ccc;
-    background:white;
-    font-size:18px;
-    cursor:pointer;
-
-    display:flex;
-    justify-content:center;
-    align-items:center;
-
-    transition:0.25s;
+.icon_btn {
+    height: 80%;
+    width: 80%;
+    border-radius: 10px;
+    border: none; /* Removed harsh solid border */
+    background: transparent; /* Made buttons blend into the header */
+    color: var(--text-primary);
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.2s ease;
 }
 
-.icon_btn:hover{
-    background:black;
-    color:white;
-    transform:scale(1.05);
+.icon_btn:hover {
+    background: var(--bg-hover);
+    transform: scale(1.05);
 }
 
-.header_search_bar_container{
-    height:80%;
-    width:500px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
+.header_search_bar_container {
+    height: 80%;
+    width: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-#header_search_bar{
-
-    height:100%;
-    width:100%;
-    border-radius:10px;
-    border:1px solid #ccc;
-    padding-left:10px;
+#header_search_bar {
+    height: 80%; /* Slightly shorter than container for padding */
+    width: 100%;
+    border-radius: 10px;
+    border: none;
+    background-color: var(--bg-hover);
+    color: var(--text-primary);
+    padding-left: 15px;
+    font-size: 14px;
+    outline: none; /* Removes default browser focus ring */
 }
 
-#header_search_bar:focus{
-    background:black;
-    color:white;
+#header_search_bar::placeholder {
+    color: var(--text-muted);
+}
+
+#header_search_bar:focus {
+    background-color: var(--bg-app);
+    border: 1px solid var(--border-color);
 }
