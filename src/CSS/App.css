@@ -1,38 +1,78 @@
+/* src/CSS/App.css */
+
 .App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
   min-height: 100vh;
+  background-color: var(--bg-app);
   display: flex;
   flex-direction: column;
+}
+
+.main-content-canvas {
+  flex: 1;
+  width: 100vw;
+  padding-bottom: 40px;
+}
+
+.dashboard-stories-feed {
+  padding-top: 10px;
+}
+
+/* --- Global Platform-wide Empty State --- */
+.global-empty-state-container {
+  display: flex;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  min-height: 70vh;
+  padding: 20px;
+}
+
+.empty-state-card {
+  text-align: center;
+  background-color: var(--bg-elevated);
+  padding: 40px 30px;
+  border-radius: 20px;
+  max-width: 420px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  border: 1px solid var(--border-color);
+}
+
+.global-empty-icon {
+  font-size: 56px;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+  opacity: 0.5;
+}
+
+.empty-state-card h2 {
+  margin: 0 0 10px 0;
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.empty-state-card p {
+  color: var(--text-muted);
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0 0 25px 0;
+}
+
+.primary-action-btn {
+  background: var(--ring-unseen); /* Re-using our gradient! */
+  border: none;
   color: white;
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 30px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: transform 0.2s, opacity 0.2s;
 }
 
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.primary-action-btn:hover {
+  transform: translateY(-2px);
+  opacity: 0.9;
 }

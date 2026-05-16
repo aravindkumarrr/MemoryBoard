@@ -1,0 +1,170 @@
+/* src/components/StoryBar/StoryBar.css */
+
+.story-circle-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  width: 72px; /* Fixed width prevents layout shifts */
+  transition: transform 0.2s ease;
+}
+
+.story-circle-container:hover {
+  transform: scale(1.05);
+}
+
+/* The Gradient Ring */
+.story-ring {
+  width: 66px;
+  height: 66px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* Padding acts as the thickness of the gradient ring */
+  padding: 2px; 
+}
+
+/* Utilize the global CSS variables we set up earlier */
+.story-ring.unseen {
+  background: var(--ring-unseen);
+}
+
+.story-ring.seen {
+  background: var(--ring-seen);
+}
+
+/* The Inner Image */
+.story-cover-image {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  /* This border matches the canvas background, creating the transparent "gap" */
+  border: 3px solid var(--bg-app);
+}
+
+/* The Text Below */
+.story-title {
+  margin-top: 6px;
+  font-size: 11px;
+  color: var(--text-primary);
+  text-align: center;
+  
+  /* Text Truncation (adds "..." if name is too long) */
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+/* --- StoryBar Container Styles --- */
+
+.story-bar-section {
+  width: 95%;
+  max-width: 800px;
+  margin: 20px auto;
+  background-color: var(--bg-elevated); /* Using our dark mode token */
+  padding: 15px 20px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); /* Deep shadow for dark mode */
+}
+
+.category-title {
+  margin: 0 0 12px 5px;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-muted);
+}
+
+/* The Horizontal Scroll Magic */
+.story-scroll-container {
+  display: flex;
+  gap: 18px;
+  overflow-x: auto; /* Allows horizontal scrolling */
+  padding: 5px; /* Gives room for the circle hover scale effect */
+  scroll-behavior: smooth;
+}
+
+/* Hide default ugly scrollbars for Chrome/Safari */
+.story-scroll-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbars for Firefox/IE */
+.story-scroll-container {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* --- Empty State Styles --- */
+.empty-bar {
+  border: 1px dashed var(--border-color);
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.empty-category-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 0;
+  color: var(--text-muted);
+  font-size: 13px;
+  gap: 8px;
+}
+
+.empty-icon {
+  font-size: 24px;
+  opacity: 0.5;
+}
+/* --- Edit Mode Styles for StoryBar --- */
+
+.story-bar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+/* Reset margin on the title since flexbox handles spacing now */
+.story-bar-header .category-title {
+  margin: 0; 
+}
+
+.list-edit-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.icon-btn-small {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+  border-radius: 6px;
+  padding: 6px 10px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-btn-small:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.icon-btn-small.delete-btn:hover {
+  background: rgba(255, 65, 108, 0.1);
+  color: #ff416c;
+  border-color: #ff416c;
+}

@@ -1,0 +1,203 @@
+/* src/components/StoryEditor/StoryEditModal.css */
+
+/* The dark blurred background */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: flex-end; /* Anchors to bottom on mobile */
+    z-index: 1000;
+}
+
+/* The modal container */
+.modal-content.vertical-modal {
+  background-color: var(--bg-elevated);
+  width: 100%;
+  max-width: 500px;
+  max-height: 85vh;
+  border-radius: 20px 20px 0 0; 
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.5);
+  border-top: 1px solid var(--border-color);
+  animation: slideUp 0.3s ease-out forwards;
+}
+
+/* Desktop override: Center the modal and round all corners */
+@media (min-width: 600px) {
+  .modal-overlay {
+    align-items: center;
+  }
+  .modal-content.vertical-modal {
+    border-radius: 16px;
+    border: 1px solid var(--border-color);
+  }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+/* Header */
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 16px;
+  color: var(--text-primary);
+}
+
+.close-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 20px;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.close-btn:hover {
+  color: var(--text-primary);
+}
+
+/* Body and scrolling list */
+.modal-body {
+  padding: 15px 20px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.media-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Individual Media Items */
+.media-edit-row {
+  display: flex;
+  align-items: center;
+  background-color: var(--bg-app);
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+}
+
+.media-thumb {
+  width: 50px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.media-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-left: 15px;
+}
+
+.media-type {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+}
+
+.media-music {
+  font-size: 13px;
+  color: var(--text-primary);
+  margin-top: 4px;
+}
+
+/* Action Buttons inside the row */
+.media-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.media-actions button {
+  background: var(--bg-hover);
+  border: none;
+  color: var(--text-primary);
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 0.2s;
+}
+
+.media-actions button:hover:not(:disabled) {
+  background: var(--accent-blue);
+}
+
+.media-actions button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* Stack the tiny up/down arrows */
+.reorder-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.reorder-stack button {
+  width: 24px;
+  height: 15px;
+  border-radius: 4px;
+  font-size: 10px;
+}
+
+/* Specific styling for the row delete button */
+.media-actions .delete-text-btn {
+  background: rgba(255, 65, 108, 0.1);
+  color: #ff416c;
+}
+
+.media-actions .delete-text-btn:hover {
+  background: #ff416c;
+  color: white;
+}
+
+/* Footer / Global Delete */
+.modal-footer {
+  padding: 15px 20px;
+  border-top: 1px solid var(--border-color);
+}
+
+.danger-btn.full-width {
+  width: 100%;
+  background: rgba(255, 65, 108, 0.1);
+  color: #ff416c;
+  border: 1px solid rgba(255, 65, 108, 0.3);
+  padding: 14px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.danger-btn.full-width:hover {
+  background: #ff416c;
+  color: white;
+}
