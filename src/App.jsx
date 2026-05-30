@@ -1,4 +1,3 @@
-// src/App.jsx
 import React, { useState } from 'react';
 import './CSS/App.css';
 import Header from './Header.jsx';
@@ -10,9 +9,8 @@ function App() {
   const [categories, setCategories] = useState(demoCategoriesArray);
   const [isEditMode, setIsEditMode] = useState(false);
   const [activeStoryViewer, setActiveStoryViewer] = useState(null);
-  const [editingStoryContext, setEditingStoryContext] = useState(null); // { story, listId }
+  const [editingStoryContext, setEditingStoryContext] = useState(null); 
 
-  // Calculates total across all arrays to check if entire app is empty
   const totalStoriesCount = categories.reduce((acc, curr) => acc + curr.stories.length, 0);
 
   const handleStorySelect = (story, listId) => {
@@ -24,9 +22,17 @@ function App() {
     }
   };
 
-  // --- LIST LEVEL CRUD (Fixed) ---
+  const handleCreateNewList = () => {
+    const newList = {
+      listId: `list-${Date.now()}`,
+      title: "New Memory List",
+      stories: []
+    };
+    setCategories([...categories, newList]);
+    setIsEditMode(true); 
+  };
+
   const handleDeleteList = (listIdToRemove) => {
-    // This literally removes the object from the array, unmounting the UI row completely
     setCategories(prev => prev.filter(cat => cat.listId !== listIdToRemove));
   };
 
@@ -40,7 +46,6 @@ function App() {
     if (index === 0) return;
     setCategories(prev => {
       const arrCopy = [...prev];
-      // Classic JS Array element swap
       [arrCopy[index - 1], arrCopy[index]] = [arrCopy[index], arrCopy[index - 1]];
       return arrCopy;
     });
@@ -50,13 +55,11 @@ function App() {
     if (index === categories.length - 1) return;
     setCategories(prev => {
       const arrCopy = [...prev];
-      // Classic JS Array element swap
       [arrCopy[index + 1], arrCopy[index]] = [arrCopy[index], arrCopy[index + 1]];
       return arrCopy;
     });
   };
 
-  // --- STORY LEVEL CRUD (Refactored for Array) ---
   const handleUpdateStory = (listId, updatedStory) => {
     setCategories(prev => prev.map(cat => {
       if (cat.listId === listId) {
@@ -110,14 +113,13 @@ function App() {
               <i className="fa-solid fa-photo-film global-empty-icon"></i>
               <h2>No Lists Remaining</h2>
               <p>You have deleted all your memory collections.</p>
-              <button className="primary-action-btn">
+              <button className="primary-action-btn" onClick={handleCreateNewList}>
                 <i className="fa-solid fa-plus"></i> Create New List
               </button>
             </div>
           </div>
         ) : (
           <div className="dashboard-stories-feed">
-            {/* We map directly over state now, no hardcoded configurations! */}
             {categories.map((category, index) => (
               <StoryBar 
                 key={category.listId}
