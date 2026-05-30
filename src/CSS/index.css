@@ -32,3 +32,33 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* 1. Prevent Horizontal Scrolling */
+body, html {
+  overflow-x: hidden;
+}
+
+/* 2. Custom Vertical Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 12px; /* Width of the vertical scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  background: #121212; /* Matches a typical dark theme background */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #333; /* Dark grey for the default state */
+  border-radius: 10px; /* Makes the scrollbar rounded */
+  border: 3px solid #121212; /* Creates a "floating" padding effect around the thumb */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Lightens up slightly when the user hovers over it */
+}
+
+/* Optional: For Firefox support (Firefox doesn't use webkit pseudo-elements) */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #333 #121212;
+}

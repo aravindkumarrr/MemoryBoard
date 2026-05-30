@@ -4,14 +4,12 @@ import './StoryViewer.css';
 function StoryViewer({ activeContext, categories, onClose, onNavigate }) {
     const [currentIndex, setCurrentIndex] = useState(0);
 
-    // Reset index to 0 whenever we open a new story
     useEffect(() => {
     setCurrentIndex(0);
     }, [activeContext.story.id]);
 
     const { story, listId } = activeContext;
 
-    // Find adjacent stories in the same list
     const currentList = categories.find(c => c.listId === listId);
     const storyIndexInList = currentList.stories.findIndex(s => s.id === story.id);
 
@@ -24,7 +22,7 @@ function StoryViewer({ activeContext, categories, onClose, onNavigate }) {
     const isLastMedia = currentIndex === story.items.length - 1;
 
     const handlePrev = (e) => {
-    e.stopPropagation(); // Prevent closing overlay
+    if (e) e.stopPropagation(); 
     if (!isFirstMedia) {
         setCurrentIndex(prev => prev - 1);
     } else if (prevStory) {
@@ -33,17 +31,34 @@ function StoryViewer({ activeContext, categories, onClose, onNavigate }) {
     };
 
     const handleNext = (e) => {
-    e.stopPropagation(); 
+    if (e) e.stopPropagation(); 
     if (!isLastMedia) {
         setCurrentIndex(prev => prev + 1);
     } else if (nextStory) {
         onNavigate(nextStory, listId);
     } else {
-        onClose(); // Close if no more stories
+        onClose(); 
     }
     };
 
-    // Safe fallback if story has no media
+    useEffect(() => {
+    const handleKeyDown = (e) => {
+        if (e.key === 'Escape') {
+        onClose();
+        } else if (e.key === 'ArrowRight') {
+        handleNext();
+        } else if (e.key === 'ArrowLeft') {
+        handlePrev();
+        }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+        window.removeEventListener('keydown', handleKeyDown);
+    };
+    }, [currentIndex, isFirstMedia, isLastMedia, prevStory, nextStory, listId, onNavigate, onClose]);
+
     if (!currentMedia) {
         return (
             <div className="story-viewer-overlay" onClick={onClose}>
@@ -53,7 +68,6 @@ function StoryViewer({ activeContext, categories, onClose, onNavigate }) {
         );
     }
 
-    // Get cover image (first item src) for previews
     const getCover = (st) => st?.items[0]?.src || '';
 
     return (
@@ -63,7 +77,6 @@ function StoryViewer({ activeContext, categories, onClose, onNavigate }) {
         <i className="fa-solid fa-xmark"></i>
         </button>
 
-        {/* LEFT NAVIGATION (Prev Media or Prev Story) */}
         {(!isFirstMedia || prevStory) && (
         <div className="nav-area left-nav" onClick={handlePrev}>
             {isFirstMedia && prevStory ? (
@@ -71,7 +84,7 @@ function StoryViewer({ activeContext, categories, onClose, onNavigate }) {
                     <div className="blur-bg" style={{backgroundImage: `url(${getCover(prevStory)})`}}></div>
                     <div className="preview-card">
                         <img src={getCover(prevStory)} alt="Previous Story" />
-                        <span className="preview-label">Prev: {prevStory.title}</span>
+                        <span className="preview-label">{prevStory.title}</span>
                     </div>
                 </div>
             ) : (
@@ -82,7 +95,6 @@ function StoryViewer({ activeContext, categories, onClose, onNavigate }) {
         </div>
         )}
 
-        {/* MAIN CONTENT AREA */}
         <div className="viewer-content-wrapper" onClick={e => e.stopPropagation()}>
             <div className="media-container">
             {currentMedia.type === 'video' ? (
@@ -93,7 +105,6 @@ function StoryViewer({ activeContext, categories, onClose, onNavigate }) {
             </div>
         </div>
 
-        {/* RIGHT NAVIGATION (Next Media or Next Story) */}
         {(!isLastMedia || nextStory) && (
         <div className="nav-area right-nav" onClick={handleNext}>
             {isLastMedia && nextStory ? (
@@ -101,7 +112,7 @@ function StoryViewer({ activeContext, categories, onClose, onNavigate }) {
                     <div className="blur-bg" style={{backgroundImage: `url(${getCover(nextStory)})`}}></div>
                     <div className="preview-card">
                         <img src={getCover(nextStory)} alt="Next Story" />
-                        <span className="preview-label">Next: {nextStory.title}</span>
+                        <span className="preview-label">{nextStory.title}</span>
                     </div>
                 </div>
             ) : (

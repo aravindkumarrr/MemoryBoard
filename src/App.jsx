@@ -220,6 +220,7 @@ function App() {
           categories={categories}
           onClose={() => setActiveStoryViewer(null)}
           onNavigate={handleNavigateStory}
+          
         />)
       }
     </div>
