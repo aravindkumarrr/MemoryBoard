@@ -176,3 +176,38 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
     }
+
+.music-marquee-container {
+position: absolute;
+bottom: 20px;
+left: 50%;
+transform: translateX(-50%);
+width: 250px;
+overflow: hidden;
+white-space: nowrap;
+z-index: 2020;
+background: rgba(0, 0, 0, 0.6);
+padding: 8px 15px;
+border-radius: 20px;
+backdrop-filter: blur(8px);
+border: 1px solid rgba(255, 255, 255, 0.1);
+box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+.music-marquee-content {
+display: inline-block;
+color: white;
+font-size: 0.9rem;
+font-weight: 500;
+padding-left: 100%;
+animation: scroll-marquee 8s linear infinite;
+}
+
+@keyframes scroll-marquee {
+0% {
+transform: translateX(0);
+}
+100% {
+transform: translateX(-100%);
+}
+}

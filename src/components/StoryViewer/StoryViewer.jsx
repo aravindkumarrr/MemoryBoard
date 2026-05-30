@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './StoryViewer.css';
 
 function StoryViewer({ activeContext, categories, onClose, onNavigate }) {
     const [currentIndex, setCurrentIndex] = useState(0);
+    const audioRef = useRef(null);
 
     useEffect(() => {
     setCurrentIndex(0);
@@ -20,6 +21,14 @@ function StoryViewer({ activeContext, categories, onClose, onNavigate }) {
 
     const isFirstMedia = currentIndex === 0;
     const isLastMedia = currentIndex === story.items.length - 1;
+
+    useEffect(() => {
+    if (audioRef.current && currentMedia?.music) {
+        audioRef.current.play().catch(error => {
+        console.log(error);
+        });
+    }
+    }, [currentIndex, currentMedia]);
 
     const handlePrev = (e) => {
     if (e) e.stopPropagation(); 
@@ -53,10 +62,7 @@ function StoryViewer({ activeContext, categories, onClose, onNavigate }) {
     };
 
     window.addEventListener('keydown', handleKeyDown);
-
-    return () => {
-        window.removeEventListener('keydown', handleKeyDown);
-    };
+    return () => window.removeEventListener('keydown', handleKeyDown);
     }, [currentIndex, isFirstMedia, isLastMedia, prevStory, nextStory, listId, onNavigate, onClose]);
 
     if (!currentMedia) {
@@ -69,6 +75,15 @@ function StoryViewer({ activeContext, categories, onClose, onNavigate }) {
     }
 
     const getCover = (st) => st?.items[0]?.src || '';
+
+    const getTrackName = (url) => {
+    try {
+        const decoded = decodeURIComponent(url);
+        return decoded.split('/').pop().split('?')[0] || "Unknown Track";
+    } catch (e) {
+        return "Playing Audio";
+    }
+    };
 
     return (
     <div className="story-viewer-overlay" onClick={onClose}>
@@ -84,7 +99,7 @@ function StoryViewer({ activeContext, categories, onClose, onNavigate }) {
                     <div className="blur-bg" style={{backgroundImage: `url(${getCover(prevStory)})`}}></div>
                     <div className="preview-card">
                         <img src={getCover(prevStory)} alt="Previous Story" />
-                        <span className="preview-label">{prevStory.title}</span>
+                        <span className="preview-label">Prev: {prevStory.title}</span>
                     </div>
                 </div>
             ) : (
@@ -103,7 +118,24 @@ function StoryViewer({ activeContext, categories, onClose, onNavigate }) {
                 <img src={currentMedia.src} alt="memory" className="viewer-media" />
             )}
             </div>
+
+            {currentMedia.music && (
+            <audio 
+                ref={audioRef}
+                src={currentMedia.music} 
+                autoPlay 
+                loop 
+            />
+            )}
         </div>
+
+        {currentMedia.music && (
+        <div className="music-marquee-container">
+            <div className="music-marquee-content">
+            {getTrackName(currentMedia.music)}
+            </div>
+        </div>
+        )}
 
         {(!isLastMedia || nextStory) && (
         <div className="nav-area right-nav" onClick={handleNext}>
@@ -112,7 +144,7 @@ function StoryViewer({ activeContext, categories, onClose, onNavigate }) {
                     <div className="blur-bg" style={{backgroundImage: `url(${getCover(nextStory)})`}}></div>
                     <div className="preview-card">
                         <img src={getCover(nextStory)} alt="Next Story" />
-                        <span className="preview-label">{nextStory.title}</span>
+                        <span className="preview-label">Next: {nextStory.title}</span>
                     </div>
                 </div>
             ) : (

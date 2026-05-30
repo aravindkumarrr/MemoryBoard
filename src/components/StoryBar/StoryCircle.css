@@ -1,0 +1,76 @@
+.story-circle-wrapper {
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 8px;
+width: 85px;
+}
+
+.story-circle {
+width: 72px;
+height: 72px;
+border-radius: 50%;
+border: 3px solid #333;
+overflow: hidden;
+cursor: pointer;
+display: flex;
+justify-content: center;
+align-items: center;
+background: #1e1e1e;
+transition: all 0.2s ease;
+box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.story-circle:hover {
+transform: scale(1.08);
+border-color: #4CAF50;
+}
+
+.story-circle.edit-mode {
+border-style: dashed;
+border-color: #ff9800;
+}
+
+.story-cover-img {
+width: 100%;
+height: 100%;
+object-fit: cover;
+}
+
+.story-cover-placeholder {
+width: 100%;
+height: 100%;
+display: flex;
+justify-content: center;
+align-items: center;
+font-size: 1.5rem;
+color: #555;
+background: #222;
+}
+
+.story-title {
+font-size: 0.8rem;
+color: #ddd;
+text-align: center;
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
+width: 100%;
+font-weight: 500;
+}
+
+.story-title-input {
+width: 100%;
+padding: 4px;
+font-size: 0.75rem;
+border-radius: 4px;
+border: 1px solid #555;
+background: #2a2a2a;
+color: white;
+text-align: center;
+outline: none;
+}
+
+.story-title-input:focus {
+border-color: #4CAF50;
+}

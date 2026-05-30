@@ -105,13 +105,14 @@ function App() {
     }));
   };
 
-  const handleSaveNewMemory = ({ listId, listName, storyId, storyName, media }) => {
-    const newItem = {
-      id: `media-${Date.now()}`,
+  const handleSaveNewMemory = ({ listId, listName, storyId, storyName, mediaList }) => {
+    // Generate an array of strictly ordered items
+    const newItems = mediaList.map((media, index) => ({
+      id: `media-${Date.now()}-${index}`, // unique ID per item
       type: media.type.startsWith('video') ? 'video' : 'image',
       src: media.src,
       music: ""
-    };
+    }));
 
     if (listId === 'NEW_LIST') {
       const newList = {
@@ -121,7 +122,8 @@ function App() {
           {
             id: `story-${Date.now()}`,
             title: storyName || "Untitled Story",
-            items: [newItem]
+            cover: newItems[0]?.src,
+            items: newItems
           }
         ]
       };
@@ -133,7 +135,8 @@ function App() {
             const newStory = {
               id: `story-${Date.now()}`,
               title: storyName || "Untitled Story",
-              items: [newItem]
+              cover: newItems[0]?.src,
+              items: newItems
             };
             return { ...cat, stories: [...cat.stories, newStory] };
           } else {
@@ -141,7 +144,7 @@ function App() {
               ...cat,
               stories: cat.stories.map(s =>
                 s.id === storyId
-                  ? { ...s, title: storyName, items: [...s.items, newItem] }
+                  ? { ...s, title: storyName, items: [...s.items, newItems], cover: s.cover || newItems[0]?.src }
                   : s
               )
             };
