@@ -3,13 +3,16 @@ import './CSS/App.css';
 import Header from './Header.jsx';
 import StoryBar from './components/StoryBar/StoryBar.jsx';
 import StoryEditModal from './components/StoryEditor/StoryEditModal.jsx';
+import AddMemoryModal from './components/StoryEditor/AddMemoryModal.jsx';
 import { demoCategoriesArray } from './data/demoStories.js';
+import StoryViewer from './components/StoryViewer/StoryViewer.jsx';
 
 function App() {
   const [categories, setCategories] = useState(demoCategoriesArray);
   const [isEditMode, setIsEditMode] = useState(false);
   const [activeStoryViewer, setActiveStoryViewer] = useState(null);
-  const [editingStoryContext, setEditingStoryContext] = useState(null); 
+  const [editingStoryContext, setEditingStoryContext] = useState(null);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
   const totalStoriesCount = categories.reduce((acc, curr) => acc + curr.stories.length, 0);
 
@@ -17,9 +20,12 @@ function App() {
     if (isEditMode) {
       setEditingStoryContext({ story, listId });
     } else {
-      setActiveStoryViewer(story);
+      setActiveStoryViewer({ story, listId });
       console.log("Viewing story:", story.title);
     }
+  };
+  const handleNavigateStory = (newStory, listId) => {
+    setActiveStoryViewer({ story: newStory, listId });
   };
 
   const handleCreateNewList = () => {
@@ -29,7 +35,7 @@ function App() {
       stories: []
     };
     setCategories([...categories, newList]);
-    setIsEditMode(true); 
+    setIsEditMode(true);
   };
 
   const handleDeleteList = (listIdToRemove) => {
@@ -99,11 +105,60 @@ function App() {
     }));
   };
 
+  const handleSaveNewMemory = ({ listId, listName, storyId, storyName, media }) => {
+    const newItem = {
+      id: `media-${Date.now()}`,
+      type: media.type.startsWith('video') ? 'video' : 'image',
+      src: media.src,
+      music: ""
+    };
+
+    if (listId === 'NEW_LIST') {
+      const newList = {
+        listId: `list-${Date.now()}`,
+        title: listName || "Untitled List",
+        stories: [
+          {
+            id: `story-${Date.now()}`,
+            title: storyName || "Untitled Story",
+            items: [newItem]
+          }
+        ]
+      };
+      setCategories([...categories, newList]);
+    } else {
+      setCategories(prev => prev.map(cat => {
+        if (cat.listId === listId) {
+          if (storyId === 'NEW_STORY') {
+            const newStory = {
+              id: `story-${Date.now()}`,
+              title: storyName || "Untitled Story",
+              items: [newItem]
+            };
+            return { ...cat, stories: [...cat.stories, newStory] };
+          } else {
+            return {
+              ...cat,
+              stories: cat.stories.map(s =>
+                s.id === storyId
+                  ? { ...s, title: storyName, items: [...s.items, newItem] }
+                  : s
+              )
+            };
+          }
+        }
+        return cat;
+      }));
+    }
+    setIsAddModalOpen(false);
+  };
+
   return (
     <div className="App">
       <Header 
         isEditMode={isEditMode} 
-        toggleEditMode={() => setIsEditMode(!isEditMode)} 
+        toggleEditMode={() => setIsEditMode(!isEditMode)}
+        onAddClick={() => setIsAddModalOpen(true)}
       />
 
       <main className="main-content-canvas">
@@ -150,6 +205,23 @@ function App() {
           onDeleteStory={handleDeleteStory}
         />
       )}
+
+      {isAddModalOpen && (
+        <AddMemoryModal
+          categories={categories}
+          onClose={() => setIsAddModalOpen(false)}
+          onSave={handleSaveNewMemory}
+        />
+      )
+      }
+      {activeStoryViewer && (
+        <StoryViewer 
+          activeContext={activeStoryViewer}
+          categories={categories}
+          onClose={() => setActiveStoryViewer(null)}
+          onNavigate={handleNavigateStory}
+        />)
+      }
     </div>
   );
 }

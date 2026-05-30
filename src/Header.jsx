@@ -3,7 +3,7 @@ import './CSS/Header.css';
 import { useState } from "react";
 
 // Add isEditMode and toggleEditMode as props
-function Header({ isEditMode, toggleEditMode }) {
+function Header({ isEditMode, toggleEditMode, onAddClick }) {
     const [locked, setLocked] = useState(true);
     
     function toggleLock() {
@@ -36,7 +36,7 @@ function Header({ isEditMode, toggleEditMode }) {
             </div>
 
             <div className="header_button_container">
-                <button id="add_new_btn" className="icon_btn">
+                <button id="add_new_btn" className="icon_btn" onClick={onAddClick}>
                     <i className="fa-solid fa-plus"></i>
                 </button>
             </div>
