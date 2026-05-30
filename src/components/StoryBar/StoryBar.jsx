@@ -1,5 +1,3 @@
-// src/components/StoryBar/StoryBar.jsx
-
 import React from 'react';
 import StoryCircle from './StoryCircle.jsx';
 import './StoryBar.css';
