@@ -99,7 +99,7 @@ function StoryViewer({ activeContext, categories, onClose, onNavigate }) {
                     <div className="blur-bg" style={{backgroundImage: `url(${getCover(prevStory)})`}}></div>
                     <div className="preview-card">
                         <img src={getCover(prevStory)} alt="Previous Story" />
-                        <span className="preview-label">Prev: {prevStory.title}</span>
+                        <span className="preview-label">{prevStory.title}</span>
                     </div>
                 </div>
             ) : (
@@ -144,7 +144,7 @@ function StoryViewer({ activeContext, categories, onClose, onNavigate }) {
                     <div className="blur-bg" style={{backgroundImage: `url(${getCover(nextStory)})`}}></div>
                     <div className="preview-card">
                         <img src={getCover(nextStory)} alt="Next Story" />
-                        <span className="preview-label">Next: {nextStory.title}</span>
+                        <span className="preview-label">{nextStory.title}</span>
                     </div>
                 </div>
             ) : (

@@ -128,10 +128,12 @@ function AddMemoryModal({ categories, onClose, onSave }) {
             </div>
             ) : (
             <div className="drop-placeholder">
-                <p>Drag & Drop Images/Videos here</p>
+                <span>Drag and Drop Images / Videos Here</span>
                 <span>or</span>
-                {/* Added 'multiple' attribute here */}
-                <input type="file" multiple accept="image/*,video/*" onChange={handleFileInput} />
+                <button id = "choose_files_button">
+                    <input style={{color: "transparent"}} type="file" multiple accept="image/*,video/*" onChange={handleFileInput}/>
+                </button>
+                
             </div>
             )}
         </div>

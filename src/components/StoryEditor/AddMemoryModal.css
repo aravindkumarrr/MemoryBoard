@@ -189,3 +189,10 @@
   opacity: 0;
   cursor: pointer;
 }
+
+#choose_files_button{
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    overflow-x: hidden;
+}
