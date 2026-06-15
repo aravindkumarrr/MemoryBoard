@@ -8,11 +8,48 @@ import { demoCategoriesArray } from './data/demoStories.js';
 import StoryViewer from './components/StoryViewer/StoryViewer.jsx';
 
 function App() {
+  const [isLocked, setIsLocked] = useState(true);
+  const [passcode, setPasscode] = useState('');
+  const [isError, setIsError] = useState(false);
+  const SECRET_CODE = "1234";
+
   const [categories, setCategories] = useState(demoCategoriesArray);
   const [isEditMode, setIsEditMode] = useState(false);
   const [activeStoryViewer, setActiveStoryViewer] = useState(null);
   const [editingStoryContext, setEditingStoryContext] = useState(null);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+
+  const handleUnlock = (e) => {
+    e.preventDefault();
+    if (passcode === SECRET_CODE) {
+      setIsLocked(false);
+      setIsError(false);
+      setPasscode('');
+    } else {
+      setIsError(true);
+      setPasscode('');
+    }
+  };
+
+  if (isLocked) {
+    return (
+      <div className="locked-app">
+        <div className="lock-popup">
+          <p>Enter your secret code to unlock</p>
+          <form onSubmit={handleUnlock} className="lock-form">
+            <input
+              type="password"
+              value={passcode}
+              onChange={(e) => setPasscode(e.target.value)}
+              className={`lock-input ${isError ? 'error-shake' : ''}`}
+              autoFocus
+            />
+            <button type="submit" className="lock-submit">Unlock</button>
+          </form>
+        </div>
+      </div>
+    );
+  }
 
   const totalStoriesCount = categories.reduce((acc, curr) => acc + curr.stories.length, 0);
 
@@ -21,9 +58,9 @@ function App() {
       setEditingStoryContext({ story, listId });
     } else {
       setActiveStoryViewer({ story, listId });
-      console.log("Viewing story:", story.title);
     }
   };
+
   const handleNavigateStory = (newStory, listId) => {
     setActiveStoryViewer({ story: newStory, listId });
   };
@@ -106,9 +143,8 @@ function App() {
   };
 
   const handleSaveNewMemory = ({ listId, listName, storyId, storyName, mediaList }) => {
-    // Generate an array of strictly ordered items
     const newItems = mediaList.map((media, index) => ({
-      id: `media-${Date.now()}-${index}`, // unique ID per item
+      id: `media-${Date.now()}-${index}`,
       type: media.type.startsWith('video') ? 'video' : 'image',
       src: media.src,
       music: ""
@@ -162,6 +198,7 @@ function App() {
         isEditMode={isEditMode} 
         toggleEditMode={() => setIsEditMode(!isEditMode)}
         onAddClick={() => setIsAddModalOpen(true)}
+        onLock={() => setIsLocked(true)}
       />
 
       <main className="main-content-canvas">
@@ -215,17 +252,15 @@ function App() {
           onClose={() => setIsAddModalOpen(false)}
           onSave={handleSaveNewMemory}
         />
-      )
-      }
+      )}
       {activeStoryViewer && (
         <StoryViewer 
           activeContext={activeStoryViewer}
           categories={categories}
           onClose={() => setActiveStoryViewer(null)}
           onNavigate={handleNavigateStory}
-          
-        />)
-      }
+        />
+      )}
     </div>
   );
 }

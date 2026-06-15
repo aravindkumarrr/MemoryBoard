@@ -1,21 +1,12 @@
-// src/Header.jsx
 import './CSS/Header.css';
-import { useState } from "react";
 
-// Add isEditMode and toggleEditMode as props
-function Header({ isEditMode, toggleEditMode, onAddClick }) {
-    const [locked, setLocked] = useState(true);
-    
-    function toggleLock() {
-        setLocked(!locked);
-    }
-
+function Header({ isEditMode, toggleEditMode, onAddClick, onLock }) {
     return (
     <>
         <div id="header_container">
             <div className="header_button_container">
-                <button id="lock_btn" className="icon_btn" onClick={toggleLock}>
-                    {locked ? (<i className="fa-solid fa-lock"></i>) : (<i className="fa-solid fa-unlock"></i>)}
+                <button id="lock_btn" className="icon_btn" onClick={onLock}>
+                    <i className="fa-solid fa-unlock"></i>
                 </button>
             </div>
 
@@ -23,7 +14,6 @@ function Header({ isEditMode, toggleEditMode, onAddClick }) {
                 <input type="text" id="header_search_bar" placeholder="Search Memories..." />
             </div>
 
-            {/* Hooked up the Edit Button */}
             <div className="header_button_container">
                 <button 
                     id="edit_btn" 
