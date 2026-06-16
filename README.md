@@ -17,4 +17,5 @@ Many people want to disconnect from toxic social media algorithms, but feel trap
 
 ## Pending Features
 - Database Integration: A suitable database needs to be integrated to store and manage data from multiple users.
+- A working backend system.
 - Functional Search feature and Profile modification feature.
