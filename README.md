@@ -1,5 +1,5 @@
 # MemoryBoard
-MemoryBoard is a sleek, modern, and highly responsive single-page web application designed for collecting, organizing, and viewing personal memories through media streams. It features an aesthetic dark-mode layout inspired by modern social media feeds, tailored for deep personal curation.
+MemoryBoard is a modern single-page web application designed for collecting, organizing, and viewing personal memories through media streams. It features an aesthetic dark-mode layout inspired by modern social media feeds, tailored for deep personal curation.
 
 ## Motivation and Intention
 Many people want to disconnect from toxic social media algorithms, but feel trapped because they rely on features like "Stories" and "Memories" to archive their lives. MemoryBoard was created to solve this problem. It extracts the best part of social media—beautiful, chronological media curation—into a private, standalone sanctuary, empowering users to finally delete their accounts without losing their digital scrapbooks.
