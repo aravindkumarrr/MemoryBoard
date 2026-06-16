@@ -28,6 +28,11 @@ function App() {
     } else {
       setIsError(true);
       setPasscode('');
+
+      setTimeout(() => {
+        setIsError(false);
+      }, 400);
+      
     }
   };
 
