@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/MemoryBoard/static/css/main.afed3f06.css",
+    "main.js": "/MemoryBoard/static/js/main.888035b3.js",
+    "index.html": "/MemoryBoard/index.html",
+    "main.afed3f06.css.map": "/MemoryBoard/static/css/main.afed3f06.css.map",
+    "main.888035b3.js.map": "/MemoryBoard/static/js/main.888035b3.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.afed3f06.css",
+    "static/js/main.888035b3.js"
+  ]
+}
